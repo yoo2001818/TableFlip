@@ -313,4 +313,6 @@ BitSet.prototype.toString = function(redix) {
   return map.reverse().join(' ');
 }
 
-Package.BitSet = BitSet;
+if(typeof module !== 'undefined') {
+  module.exports = BitSet;
+}

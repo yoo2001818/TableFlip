@@ -11,4 +11,6 @@ Component.create = function(options) {
   return new Component();
 }
 
-Package.Component = Component;
+if(typeof module !== 'undefined') {
+  module.exports = Component;
+}

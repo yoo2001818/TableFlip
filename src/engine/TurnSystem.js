@@ -54,4 +54,6 @@ TurnSystem.prototype.onAction = function(turn, action) {
   
 }
 
-Package.TurnSystem = TurnSystem;
+if(typeof module !== 'undefined') {
+  module.exports = TurnSystem;
+}

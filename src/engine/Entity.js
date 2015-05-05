@@ -126,4 +126,6 @@ Entity.prototype.has = function(component) {
   return this.componentBits.get(bitPos);
 }
 
-Package.Entity = Entity;
+if(typeof module !== 'undefined') {
+  module.exports = Entity;
+}

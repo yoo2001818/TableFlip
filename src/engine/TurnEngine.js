@@ -191,4 +191,6 @@ TurnEngine.prototype.runAction = function(action) {
   return action.result;
 }
 
-Package.TurnEngine = TurnEngine;
+if(typeof module !== 'undefined') {
+  module.exports = TurnEngine;
+}

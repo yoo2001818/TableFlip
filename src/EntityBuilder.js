@@ -41,4 +41,6 @@ EntityBuilder.buildEntity = function(engine, template) {
   return entity;
 }
 
-Package.EntityBuilder = EntityBuilder;
+if(typeof module !== 'undefined') {
+  module.exports = EntityBuilder;
+}

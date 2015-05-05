@@ -24,4 +24,6 @@ PlayerComponent.create = function(options) {
   return new PlayerComponent(options.id, options.name);
 }
 
-Package.components.PlayerComponent = PlayerComponent;
+if(typeof module !== 'undefined') {
+  module.exports = PlayerComponent;
+}

@@ -343,4 +343,6 @@ Engine.prototype.update = function() {
   })
 }
 
-Package.Engine = Engine;
+if(typeof module !== 'undefined') {
+  module.exports = Engine;
+}

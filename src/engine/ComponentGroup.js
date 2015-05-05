@@ -169,4 +169,6 @@ ComponentGroup.Builder.prototype.build = function() {
  * @see Engine
  */
 
-Package.ComponentGroup = ComponentGroup;
+if(typeof module !== 'undefined') {
+  module.exports = ComponentGroup;
+}

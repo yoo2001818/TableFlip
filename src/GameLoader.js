@@ -23,4 +23,6 @@ GameLoader.prototype.addPlayer = function(id, name) {
   logger && logger.log('entity id='+entity.id+', componentBits='+entity.componentBits.toString());
 }
 
-Package.GameLoader = GameLoader;
+if(typeof module !== 'undefined') {
+  module.exports = GameLoader;
+}

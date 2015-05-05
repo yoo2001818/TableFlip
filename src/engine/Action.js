@@ -69,4 +69,6 @@ Action.scaffold = function(func, constructor, classObj) {
   return newClass;
 }
 
-Package.Action = Action;
+if(typeof module !== 'undefined') {
+  module.exports = Action;
+}

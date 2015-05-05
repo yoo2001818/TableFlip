@@ -32,4 +32,6 @@ System.prototype.update = function() {
   
 }
 
-Package.System = System;
+if(typeof module !== 'undefined') {
+  module.exports = System;
+}
