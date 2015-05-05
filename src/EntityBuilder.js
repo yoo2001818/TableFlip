@@ -1,3 +1,6 @@
+var EntityTemplate = require('./EntityTemplate');
+var Entity = require('./Entity'); 
+
 var EntityBuilder = {};
 
 function deepCopy(src, dest) {
@@ -13,7 +16,7 @@ function deepCopy(src, dest) {
 }
 
 EntityBuilder.getEntityTemplate = function(template) {
-  var origin = Package.EntityTemplate[template];
+  var origin = EntityTemplate[template];
   if(origin == null) return {};
   var obj = {};
   if(origin['prototype']) {
@@ -26,11 +29,12 @@ EntityBuilder.getEntityTemplate = function(template) {
 }
 
 EntityBuilder.buildEntity = function(engine, template) {
-  var entity = new Package.Entity(engine);
+  var entity = new Entity(engine);
   for(var key in template) {
-    if(Package.components[key]) {
-      if(typeof Package.components[key].create == 'function') {
-        entity.add(Package.components[key].create(template[key]));
+    // We have to find a way to 'discover' components.
+    if(components[key]) {
+      if(typeof components[key].create == 'function') {
+        entity.add(components[key].create(template[key]));
       } else {
         throw new Error('Component '+key+' does not have create function');
       }

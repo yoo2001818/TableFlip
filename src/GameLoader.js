@@ -1,3 +1,5 @@
+// I haven't found a proper way to 'discover' modules
+//
 var GameLoader = function(isServer, logger) {
   this.engine = new Package.TurnEngine(isServer);
   logger && logger.log('searching package');

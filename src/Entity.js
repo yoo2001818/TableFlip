@@ -1,3 +1,5 @@
+var EventEmitter = require('./EventEmitter');
+
 /**
  * Represents a Entity.
  * Entity is a simple object that holds {@link Component}.
@@ -6,7 +8,7 @@
  * @param engine {Engine} - The Engine associated with this object.
  */
 function Entity(engine) {
-  Package.EventEmitter.call(this);
+  EventEmitter.call(this);
   /**
    * The ID of this object.
    * This will be given by Engine, and it shouldn't be edited.
@@ -42,7 +44,7 @@ function Entity(engine) {
   this.componentsArray = [];
 }
 
-Entity.prototype = Object.create(Package.EventEmitter.prototype);
+Entity.prototype = Object.create(EventEmitter.prototype);
 Entity.prototype.constructor = Entity;
 
 /**

@@ -1,3 +1,8 @@
+var Engine = require('./Engine');
+var ComponentGroup = require('./ComponentGroup');
+var PlayerComponent = require('./PlayerComponent');
+var Turn = require('./Turn');
+
 /**
  * 턴 기반 멀티플레이어 게임 엔진
  * Player, Action으로 정보 저장 및 교환함
@@ -25,7 +30,7 @@
  * @see Turn
  */
 function TurnEngine(isServer, playerComponent) {
-  Package.Engine.call(this);
+  Engine.call(this);
   /**
    * A boolean contains whether if it's a server or not.
    * @var {Boolean}
@@ -42,11 +47,11 @@ function TurnEngine(isServer, playerComponent) {
    * @var {Array}
    * @see Entity
    */
-  this.players = this.getEntitiesFor(Package.ComponentGroup.createBuilder(this)
-    .contain(playerComponent || Package.components.PlayerComponent).build());
+  this.players = this.getEntitiesFor(ComponentGroup.createBuilder(this)
+    .contain(playerComponent || PlayerComponent).build());
 }
 
-TurnEngine.prototype = Object.create(Package.Engine.prototype);
+TurnEngine.prototype = Object.create(Engine.prototype);
 TurnEngine.prototype.constructor = TurnEngine;
 
 /**
@@ -75,7 +80,7 @@ TurnEngine.prototype.nextTurn = function() {
     if(this.players[0] == null) {
       throw new Error('There should be at least one player in the game');
     }
-    var turn = new Package.Turn(0, 0, 0, this.players[0]);
+    var turn = new Turn(0, 0, 0, this.players[0]);
     this.turns.push(turn);
     /**
      * This event is fired when the game starts.
@@ -124,7 +129,7 @@ TurnEngine.prototype.nextTurn = function() {
     seqId ++;
     order = 0;
   }
-  var turn = new Package.Turn(id + 1, order, seqId, this.players[order]);
+  var turn = new Turn(id + 1, order, seqId, this.players[order]);
   this.turns.push(turn);
   if(order == 0) {
     this.emit('sequenceNext', turn);

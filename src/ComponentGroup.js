@@ -1,3 +1,4 @@
+var EventEmitter = require('./EventEmitter');
 
 /**
  * Represents the group of components.
@@ -15,7 +16,7 @@
  * @see Component
  */
 function ComponentGroup(contain, intersect, exclude) {
-  Package.EventEmitter.call(this);
+  EventEmitter.call(this);
   /**
    * The ID of this object.
    * This will be given by Engine, and it shouldn't be edited.
@@ -49,7 +50,7 @@ function ComponentGroup(contain, intersect, exclude) {
   this.exclude = exclude;
 }
 
-ComponentGroup.prototype = Object.create(Package.EventEmitter.prototype);
+ComponentGroup.prototype = Object.create(EventEmitter.prototype);
 ComponentGroup.prototype.constructor = ComponentGroup;
 
 /**
