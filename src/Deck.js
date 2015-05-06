@@ -38,6 +38,20 @@ Deck.prototype.forEach = function(callback, thisArg) {
   this.deque.forEach(callback, thisArg);
 }
 
+function randomInt(min, max) {
+  return Math.random() * (max-min) + min | 0;
+}
+
+// Fisher-Yates shuffle
+Deck.prototype.shuffle = function() {
+  for(var i = 0; i < this.deque.length-1; ++i) {
+    var j = randomInt(i, this.deque.length);
+    var swap = this.deque[j];
+    this.deque[j] = this.deque[i];
+    this.deque[i] = swap;
+  }
+}
+
 if(typeof module != 'undefined') {
   module.exports = Deck;
 }
