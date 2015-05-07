@@ -2,8 +2,8 @@
  * Test implementation of solitare.
  */
 
-var Card = require('./Card');
-var Deck = require('./Deck');
+var Card = require('../src/Card');
+var Deck = require('../src/Deck');
 
 var initialDeck = new Deck();
 
