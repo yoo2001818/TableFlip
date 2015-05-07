@@ -3,7 +3,7 @@ function Card(type) {
   this.direction = false; 
 }
 
-Card.prototype.flip = function() {
+Card.prototype.reverse = function() {
   this.direction = !this.direction;
 }
 

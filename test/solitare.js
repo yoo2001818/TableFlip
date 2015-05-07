@@ -4,6 +4,7 @@
 
 var Card = require('../src/Card');
 var Deck = require('../src/Deck');
+var TrumpCard = require('./TrumpCard');
 
 var initialDeck = new Deck();
 
@@ -17,17 +18,9 @@ var decks = [];
  * - Spades set of K ... A
  */
 
-var numbers = ['K', 'Q', 'J', '10', '9', '8', '7', '6', '5', '4', '3', '2', 'A'].reverse();
-var types = ['hearts', 'diamonds', 'clubs', 'spades'];
-
-types.forEach(function(type, typeIndex) {
-  numbers.forEach(function(number, index) {
-    initialDeck.push(new Card({
-      number: index,
-      type: typeIndex
-    }));
-  });
-});
+for(var i = 0; i < 52; ++i) {
+  initialDeck.push(new TrumpCard(i));
+}
 
 initialDeck.shuffle();
 
@@ -38,9 +31,12 @@ console.log(initialDeck.length);
 for(var i = 1; i <= 8; ++i) {
   var deck = new Deck();
   for(var j = 0; j < i; ++j) {
-    deck.push(initialDeck.pop());
+    var card = initialDeck.pop();
+    deck.push(card);
+    // Only top card is visible
+    if(j < i-1) card.reverse();
   }
-  decks[i] = deck;
+  decks[i-1] = deck;
 }
 
-console.log(initialDeck.deque);
+console.log(decks[7]);
