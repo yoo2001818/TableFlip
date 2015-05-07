@@ -1,5 +1,6 @@
 function Deck() {
   this.deque = [];
+  this.direction = false;
 }
 
 Deck.prototype.push = function(card) {
@@ -20,6 +21,7 @@ Deck.prototype.shift = function() {
 
 Deck.prototype.reverse = function() {
   this.deque.reverse();
+  this.direction = !this.direction;
 }
 
 Deck.prototype.size = function() {

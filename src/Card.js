@@ -1,4 +1,4 @@
-function Card() {
+function Card(type) {
   this.type = type;
   this.direction = false; 
 }
