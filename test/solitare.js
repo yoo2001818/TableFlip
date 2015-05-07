@@ -33,7 +33,7 @@ initialDeck.shuffle();
 
 console.log(initialDeck.deque);
 
-console.log(initialDeck.size());
+console.log(initialDeck.length);
 
 for(var i = 1; i <= 8; ++i) {
   var deck = new Deck();
