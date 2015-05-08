@@ -6,21 +6,9 @@ var Card = require('../src/Card');
 var Deck = require('../src/Deck');
 var TrumpCard = require('./TrumpCard');
 
-var initialDeck = new Deck();
+var initialDeck = TrumpCard.createDeck();
 
 var decks = [];
-
-/*
- * A trump card set has
- * - Hearts set of K ... A
- * - Diamonds set of K ... A
- * - Clubs set of K ... A
- * - Spades set of K ... A
- */
-
-for(var i = 0; i < 52; ++i) {
-  initialDeck.push(new TrumpCard(i));
-}
 
 initialDeck.shuffle();
 

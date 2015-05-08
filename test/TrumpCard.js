@@ -1,4 +1,5 @@
 var Card = require('../src/Card');
+var Deck = require('../src/Deck');
 
 var CARD_NUMBERS = ['A', '2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K'];
 var CARD_TYPES = ['Hearts', 'Diamonds', 'Clubs', 'Spades'];
@@ -44,6 +45,16 @@ TrumpCard.prototype = Object.create(Card.prototype, {
     get: function() {
       return this.id/CARD_NUMBERS.length|0;
     }
+  },
+  
+  /**
+   * Returns the color of the card.
+   * true if it's black, false if it's red.
+   */
+  color: {
+    get: function() {
+      return this.typeRaw < 2;
+    }
   }
 });
 
@@ -55,5 +66,16 @@ TrumpCard.prototype.inspect = function() {
   return this.toString();
 }
 TrumpCard.prototype.constructor = TrumpCard;
+
+/**
+ * Creates a standard 52-card deck.
+ */
+TrumpCard.createDeck = function() {
+  var deck = new Deck();
+  for(var i = 0; i < 52; ++i) {
+    deck.push(new TrumpCard(i));
+  }
+  return deck;
+}
 
 module.exports = TrumpCard;
