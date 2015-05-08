@@ -16,8 +16,9 @@ var CARD_TYPES = ['Hearts', 'Diamonds', 'Clubs', 'Spades'];
  * Represents a single trump card.
  */
 var TrumpCard = function(id) {
-  // TODO sanitize input
-  this.id = id;
+  if(typeof id != 'number') throw new Error('TrumpCard ID should be a number');
+  if(id < 0 || id > 52) throw new Error('TrumpCard ID should be between 0 and 52');
+  this.id = id|0;
 }
 
 TrumpCard.prototype = Object.create(Card.prototype, {
