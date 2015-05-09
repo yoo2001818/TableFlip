@@ -233,7 +233,7 @@ Engine.prototype.registerComponentGroup = function(componentGroup) {
     if(componentGroup.matches(entity)) {
       // 추가
       entity.componentGroupBits.set(componentGroup.id, true);
-      componentGroup.push(entity);
+      componentGroupEntity.push(entity);
       componentGroup.emit('entityAdded', entity);
     }
   });
