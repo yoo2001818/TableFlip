@@ -1,4 +1,5 @@
 var EventEmitter = require('./EventEmitter');
+var ComponentGroup = require('./ComponentGroup');
 var BitSet = require('./BitSet');
 var DEFAULT_SYSTEM_PRIORITY = 1000;
 
@@ -250,7 +251,15 @@ Engine.prototype.registerComponentGroup = function(componentGroup) {
  * @see Engine#registerComponentGroup
  */
 Engine.prototype.getEntitiesFor = function(componentGroup) {
-  return this.registerComponentGroup(componentGroup);
+  if(componentGroup instanceof ComponentGroup) {
+    return this.registerComponentGroup(componentGroup);
+  } else {
+    // Build ComponentGroup with arguments
+    var builder = ComponentGroup.createBuilder(this);
+    builder.contain.apply(builder, arguments);
+    var componentGroup = builer.build();
+    return this.registerComponentGroup(componentGroup);
+  }
 }
 
 /**
