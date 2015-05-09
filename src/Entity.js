@@ -1,4 +1,5 @@
 var EventEmitter = require('./EventEmitter');
+var BitSet = require('./BitSet');
 
 /**
  * Represents a Entity.
