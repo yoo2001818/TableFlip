@@ -257,7 +257,7 @@ Engine.prototype.getEntitiesFor = function(componentGroup) {
     // Build ComponentGroup with arguments
     var builder = ComponentGroup.createBuilder(this);
     builder.contain.apply(builder, arguments);
-    var componentGroup = builer.build();
+    var componentGroup = builder.build();
     return this.registerComponentGroup(componentGroup);
   }
 }
