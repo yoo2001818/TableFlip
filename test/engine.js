@@ -16,18 +16,18 @@ describe('Engine', function(){
   })
   describe('#Components', function(){
     it('should return 0 for first added component', function(){
-      assert.equal(0, engine.registerComponent(TestComponent));
+      assert.equal(0, engine.registerComponent('test'));
     });
     it('should return null for already added component', function(){
-      assert.equal(0, engine.registerComponent(TestComponent));
-      assert.equal(null, engine.registerComponent(TestComponent));
+      assert.equal(0, engine.registerComponent('test'));
+      assert.equal(null, engine.registerComponent('test'));
     });
     it('should have component in engine._components[0]', function() {
-      assert.equal(0, engine.registerComponent(TestComponent));
-      assert.equal(TestComponent, engine._components[0]);
+      assert.equal(0, engine.registerComponent('test'));
+      assert.equal('test', engine._components[0]);
     });
     it('should return 0 in getComponentBit()', function(){
-      assert.equal(0, engine.getComponentBit(TestComponent));
+      assert.equal(0, engine.getComponentBit('test'));
     });
   });
   describe('#Entities', function() {
@@ -37,29 +37,29 @@ describe('Engine', function(){
       assert.equal(0, entity.id);
     });
     it('should be able to get component by constructor', function(){
-      entity.add(testComp);
-      assert.equal(testComp, entity.get(TestComponent));
+      entity.add('test', testComp);
+      assert.equal(testComp, entity.get('test'));
     });
   });
   describe('#ComponentGroups', function(){
     beforeEach(function(){
       engine.addEntity(entity);
       var testComp = new TestComponent();
-      entity.add(testComp);
+      entity.add('test', testComp);
     })
     it('getEntitiesFor(TestComponent) should return an array with an entity', function(){
-      var entities = engine.getEntitiesFor(TestComponent);
+      var entities = engine.getEntitiesFor('test');
       assert.equal(entity, entities[0]);
     });
     it('getEntitiesFor(ComponentGroup) should return an array with an entity', function(){
       var componentGroup = ComponentGroup.createBuilder(engine)
-        .contain(TestComponent).build();
+        .contain('test').build();
       var entities = engine.getEntitiesFor(componentGroup);
       assert.equal(entity, entities[0]);
     });
     it('Event should be called when an entity is added to ComponentGroup', function(done){
       var componentGroup = ComponentGroup.createBuilder(engine)
-        .contain(TestComponent).build();
+        .contain('test').build();
       componentGroup.on('entityAdded', function(evt) {
         assert.equal(entity, evt);
         done();
