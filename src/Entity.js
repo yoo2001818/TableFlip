@@ -50,11 +50,12 @@ Entity.prototype.constructor = Entity;
 
 /**
  * Adds the Component to the Entity.
+ * @param key {String} - The key of the Component.
  * @param component {Component} - The Component to add.
  * @fires Entity#componentAdded
  */
-Entity.prototype.add = function(component) {
-  var bitPos = this._engine.getComponentBit(component.constructor);
+Entity.prototype.add = function(key, component) {
+  var bitPos = this._engine.getComponentBit(key);
   this.componentBits.set(bitPos, true);
   this.components[bitPos] = component;
   this.componentsArray.push(component);
@@ -62,23 +63,19 @@ Entity.prototype.add = function(component) {
    * This event is fired when a Component is added to the Entity.
    * @event Entity#componentAdded
    * @property {Entity} 0 - the Entity.
-   * @property {Component} 1 - the Component added to Entity.
+   * @property {String} 1 - the Component key added to Entity.
+   * @property {Component} 2 - the Component added to Entity.
    */
-  this.emit('componentAdded', this, component);
+  this.emit('componentAdded', this, key, component);
 }
 
 /**
  * Removes the Component from the Entity.
- * @param component {Function} - The Component's constructor to remove.
+ * @param key {String} - The key of the Component.
  * @fires Entity#componentRemoved
  */
-Entity.prototype.remove = function(component) {
-  var bitPos;
-  if(typeof component == 'function') {
-    bitPos = this._engine.getComponentBit(component);
-  } else {
-    bitPos = this._engine.getComponentBit(component.constructor);
-  }
+Entity.prototype.remove = function(key) {
+  var bitPos = this._engine.getComponentBit(key);
   this.componentBits.set(bitPos, false);
   var orig = this.components[bitPos];
   this.componentsArray.splice(this.componentsArray.indexOf(orig), 1);
@@ -87,9 +84,9 @@ Entity.prototype.remove = function(component) {
    * This event is fired when a Component is removed from the Entity.
    * @event Entity#componentRemoved
    * @property {Entity} 0 - the Entity.
-   * @property {Component} 1 - the Component removed from Entity.
+   * @property {String} 1 - the Component key removed from the Entity.
    */
-  this.emit('componentRemoved', this, component);
+  this.emit('componentRemoved', this, key);
 }
 
 /**
@@ -103,11 +100,11 @@ Entity.prototype.removeAll = function() {
 
 /**
  * Returns the Component which this Entity has.
- * @param component {Function} - The constructor of the {@link Component}.
+ * @param key {String} - The key of the Component.
  * @returns {Component} The component.
  */
-Entity.prototype.get = function(component) {
-  var bitPos = this._engine.getComponentBit(component);
+Entity.prototype.get = function(key) {
+  var bitPos = this._engine.getComponentBit(key);
   return this.components[bitPos];
 }
 
@@ -121,11 +118,11 @@ Entity.prototype.getComponents = function() {
 
 /**
  * Checks whether if this Entity has the Component.
- * @param component {Component} - The component to check.
+ * @param key {String} - The key of the Component to check.
  * @returns {Boolean} Whether if this Entity has the Component.
  */
-Entity.prototype.has = function(component) {
-  var bitPos = this._engine.getComponentBit(component);
+Entity.prototype.has = function(key) {
+  var bitPos = this._engine.getComponentBit(key);
   return this.componentBits.get(bitPos);
 }
 

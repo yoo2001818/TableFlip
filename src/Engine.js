@@ -42,13 +42,11 @@ Engine.prototype.constructor = Engine;
 /**
  * Registers a {@link Component} type to the Engine.
  * This won't do anything if Component type is already registered.
- * @param component {Function} - {@link Component}'s constructor.
+ * @param key {String} - {@link Component}'s string key.
  */
-Engine.prototype.registerComponent = function(component) {
-  if(this._components.indexOf(component) != -1) return;
-  // TODO this variable is for debugging.
-  component.bitIndex = this._componentPos;
-  this._components.push(component);
+Engine.prototype.registerComponent = function(key) {
+  if(this._components.indexOf(key) != -1) return;
+  this._components.push(key);
   return this._componentPos ++;
 }
 
@@ -56,13 +54,13 @@ Engine.prototype.registerComponent = function(component) {
  * Returns {@link Component} type's unique ID in the Engine.
  * This unique ID is used in {@link BitSet}'s bit position.
  * This will call {@link Engine#registerComponent} if needed.
- * @param component {Function} - {@link Component} constructor.
+ * @param key {String} - {@link Component}'s string key.
  * @return the Component's unique ID.
  */
-Engine.prototype.getComponentBit = function(component) {
-  var bitPos = this._components.indexOf(component);
+Engine.prototype.getComponentBit = function(key) {
+  var bitPos = this._components.indexOf(key);
   if(bitPos == -1) {
-    return this.registerComponent(component);
+    return this.registerComponent(key);
   } else {
     return bitPos;
   }
@@ -70,7 +68,7 @@ Engine.prototype.getComponentBit = function(component) {
 
 /**
  * Returns a BitSet holding combination of {@link Component}s type's unique ID.
- * @param components {Array} - An array holding {@link Component} constructors.
+ * @param components {Array} - An array holding {@link Component} keys.
  * @return {BitSet} A BitSet holding combination of Components.
  */
 Engine.prototype.getComponentsBitSet = function(components) {
