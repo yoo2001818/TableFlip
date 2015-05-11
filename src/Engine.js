@@ -2,6 +2,7 @@ var EventEmitter = require('./EventEmitter');
 var ComponentGroup = require('./ComponentGroup');
 var BitSet = require('./BitSet');
 var Entity = require('./Entity');
+var SystemBuilder = require('./SystemBuilder');
 var DEFAULT_SYSTEM_PRIORITY = 1000;
 
 /**
@@ -301,11 +302,12 @@ Engine.prototype.getComponentGroup = function(entities) {
  * Adds the System to the Engine.
  * The System will be triggered when the {@link Engine#update} is called.
  * This will trigger {@link System#onAddedToEngine}.
+ * @param key {String} - The System's string key
  * @param system {System} - The System to add
  */
-Engine.prototype.addSystem = function(system) {
+Engine.prototype.addSystem = function(key, system) {
   if(this.systems.indexOf(system) != -1) return;
-  this._systemTable[system.constructor] = system;
+  this._systemTable[key] = system;
   system._id = this._systemPos ++;
   this.systems.push(system);
   if(typeof system.onAddedToEngine == 'function') {
@@ -318,24 +320,30 @@ Engine.prototype.addSystem = function(system) {
   this._systemsSortRequired = true;
 }
 
+Engine.prototype.createSystem = function(key) {
+  return new SystemBuilder(key, this);
+}
+
+Engine.prototype.s = Engine.prototype.createSystem;
+
 /**
  * Returns the System registered to the Engine.
- * @param system {Function} - The System's constructor
+ * @param key {String} - The System's string key
  * @returns {System} The system registered to the Engine
  */
-Engine.prototype.getSystem = function(system) {
-  return this._systemTable[system];
+Engine.prototype.getSystem = function(key) {
+  return this._systemTable[key];
 }
 
 /**
  * Removes the System from the Engine.
  * This will trigger {@link System#onRemovedFromEngine}.
- * @param system {System} - The System to remove.
+ * @param key {String} - The System's string key to remove.
  */
-Engine.prototype.removeSystem = function(system) {
+Engine.prototype.removeSystem = function(key) {
+  var system = this._systemTable[key];
   var systemPos = this.systems.indexOf(system);
   if(systemPos == -1) return;
-  delete this._systemTable[system.constructor];
   this.systems.splice(systemPos, 1);
   if(typeof system.onRemovedFromEngine == 'function') {
     system.onRemovedFromEngine(this);
