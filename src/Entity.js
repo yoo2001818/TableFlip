@@ -70,6 +70,21 @@ Entity.prototype.add = function(key, component) {
 }
 
 /**
+ * Creates new Component with the args and adds to the Entity.
+ * @param key {String} - The key of the Component.
+ * @param args {Object} - A key-value storage to create the Component.
+ * @return {Entity} the Entity to allow chains.
+ */
+Entity.prototype.create = function(key, args) {
+  var constructor = this._engine.getComponentConstructor(key);
+  var component = new constructor(args);
+  this.add(key, component);
+  return this;
+}
+
+Entity.prototype.c = Entity.prototype.create;
+
+/**
  * Removes the Component from the Entity.
  * @param key {String} - The key of the Component.
  * @fires Entity#componentRemoved

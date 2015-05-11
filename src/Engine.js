@@ -1,6 +1,7 @@
 var EventEmitter = require('./EventEmitter');
 var ComponentGroup = require('./ComponentGroup');
 var BitSet = require('./BitSet');
+var Entity = require('./Entity');
 var DEFAULT_SYSTEM_PRIORITY = 1000;
 
 /**
@@ -21,7 +22,7 @@ function Engine() {
   this._entitiesArray = [];
   this._entityPos = 0;
   this._components = [];
-  this._componentConstructors = [];
+  this._componentConstructors = {};
   this._componentPos = 0;
   this._componentGroups = [];
   this._componentGroupEntities = [];
@@ -47,11 +48,13 @@ Engine.prototype.constructor = Engine;
  * @param constructor {Object] - {@link Component}'s constructor.
  */
 Engine.prototype.registerComponent = function(key, constructor) {
+  this._componentConstructors[key] = constructor;
   if(this._components.indexOf(key) != -1) return;
   this._components.push(key);
-  this._componentConstructors.push(constructor);
   return this._componentPos ++;
 }
+
+Engine.prototype.c = Engine.prototype.registerComponent;
 
 /**
  * Returns {@link Component}'s constructor registered in the Engine/
@@ -124,6 +127,19 @@ Engine.prototype.addEntity = function(entity) {
   entity.on('componentAdded', this.updateComponentGroup, this);
   entity.on('componentRemoved', this.updateComponentGroup, this);
 }
+
+/**
+ * Creates an empty Entity and adds to the Engine.
+ * @return {Entity} an empty Entity.
+ * @fires Engine#entityAdded
+ */
+Engine.prototype.createEntity = function() {
+  var entity = new Entity(this);
+  this.addEntity(entity);
+  return entity;
+}
+
+Engine.prototype.e = Engine.prototype.createEntity;
 
 /**
  * Removes an Entity from the Engine.
