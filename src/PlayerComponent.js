@@ -4,24 +4,20 @@
  * {@link TurnEngine}.
  * @constructor
  * @extends Component
- * @param id {Number} - The player's ID
- * @param name {String} - The player's name
+ * @param args.id {Number} - The player's ID
+ * @param args.name {String} - The player's name
  */
-function PlayerComponent(id, name) {
+function PlayerComponent(args) {
   /**
    * The player's ID.
    * @var {Number}
    */
-  this.id = id;
+  this.id = args.id;
   /**
    * The player's name.
    * @var {String}
    */
-  this.name = name;
-}
-
-PlayerComponent.create = function(options) {
-  return new PlayerComponent(options.id, options.name);
+  this.name = args.name;
 }
 
 if(typeof module !== 'undefined') {
