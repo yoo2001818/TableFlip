@@ -1,6 +1,5 @@
 var Engine = require('./Engine');
 var ComponentGroup = require('./ComponentGroup');
-var PlayerComponent = require('./PlayerComponent');
 var Turn = require('./Turn');
 
 /**
@@ -25,11 +24,10 @@ var Turn = require('./Turn');
  * @constructor
  * @extends Engine
  * @param {Boolean} [isServer=false] - Whether if it's a server or not
- * @param {Function} [playerComponent=PlayerComponent] - Default player component
  * @see Action
  * @see Turn
  */
-function TurnEngine(isServer, playerComponent) {
+function TurnEngine(isServer) {
   Engine.call(this);
   /**
    * A boolean contains whether if it's a server or not.
@@ -47,8 +45,7 @@ function TurnEngine(isServer, playerComponent) {
    * @var {Array}
    * @see Entity
    */
-  this.players = this.getEntitiesFor(ComponentGroup.createBuilder(this)
-    .contain(playerComponent || PlayerComponent).build());
+  this.players = this.getEntitiesFor('player');
 }
 
 TurnEngine.prototype = Object.create(Engine.prototype);
