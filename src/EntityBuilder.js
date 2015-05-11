@@ -31,13 +31,10 @@ EntityBuilder.getEntityTemplate = function(template) {
 EntityBuilder.buildEntity = function(engine, template) {
   var entity = new Entity(engine);
   for(var key in template) {
-    // We have to find a way to 'discover' components.
-    if(components[key]) {
-      if(typeof components[key].create == 'function') {
-        entity.add(components[key].create(template[key]));
-      } else {
-        throw new Error('Component '+key+' does not have create function');
-      }
+    var constructor = engine.getComponentConstructor(key);
+    if(constructor) {
+      var component = new constructor(template[key]);
+      entity.add(template[key], component);
     } else {
       throw new Error('Component '+key+' not found');
     }

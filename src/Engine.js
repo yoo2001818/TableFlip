@@ -21,6 +21,7 @@ function Engine() {
   this._entitiesArray = [];
   this._entityPos = 0;
   this._components = [];
+  this._componentConstructors = [];
   this._componentPos = 0;
   this._componentGroups = [];
   this._componentGroupEntities = [];
@@ -43,11 +44,22 @@ Engine.prototype.constructor = Engine;
  * Registers a {@link Component} type to the Engine.
  * This won't do anything if Component type is already registered.
  * @param key {String} - {@link Component}'s string key.
+ * @param constructor {Object] - {@link Component}'s constructor.
  */
-Engine.prototype.registerComponent = function(key) {
+Engine.prototype.registerComponent = function(key, constructor) {
   if(this._components.indexOf(key) != -1) return;
   this._components.push(key);
+  this._componentConstructors.push(constructor);
   return this._componentPos ++;
+}
+
+/**
+ * Returns {@link Component}'s constructor registered in the Engine/
+ * @param key {String} - {@link Component}'s string key.
+ * @return the Component's constructor.
+ */
+Engine.prototype.getComponentConstructor = function(key) {
+  return this._componentConstructors[key];
 }
 
 /**
