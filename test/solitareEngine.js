@@ -15,6 +15,13 @@ var PlayerComponent = require('../src/PlayerComponent');
 var engine = new TurnEngine(true);
 engine.c('player', PlayerComponent);
 
+// Add systems
+engine.s('player').init(function() {
+    console.log(engine.e('player').map(function(entity) {
+      return entity.c('player').name;
+    }));
+  }).done();
+
 // Add Player entities
 engine.e().c('player', {id: 0, name: 'Test 1'});
 engine.e().c('player', {id: 1, name: 'Test 2'});

@@ -82,7 +82,10 @@ Entity.prototype.create = function(key, args) {
   return this;
 }
 
-Entity.prototype.c = Entity.prototype.create;
+Entity.prototype.c = function(key, args) {
+  if(args == null) return this.get(key);
+  return this.create(key, args);
+}
 
 /**
  * Removes the Component from the Entity.

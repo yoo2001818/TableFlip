@@ -140,7 +140,12 @@ Engine.prototype.createEntity = function() {
   return entity;
 }
 
-Engine.prototype.e = Engine.prototype.createEntity;
+Engine.prototype.e = function() {
+  if(arguments.length == 0) {
+    return this.createEntity();
+  }
+  return this.getEntitiesFor.apply(this, arguments);
+}
 
 /**
  * Removes an Entity from the Engine.
@@ -324,7 +329,10 @@ Engine.prototype.createSystem = function(key) {
   return new SystemBuilder(key, this);
 }
 
-Engine.prototype.s = Engine.prototype.createSystem;
+Engine.prototype.s = function(key, system) {
+  if(system == null) return this.createSystem(key);
+  return this.addSystem(key, system);
+}
 
 /**
  * Returns the System registered to the Engine.
