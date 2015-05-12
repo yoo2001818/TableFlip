@@ -159,7 +159,9 @@ TurnEngine.prototype.a = function(name, player, entity, options) {
   if(typeof name !== 'string') {
     return this.runAction(name);
   }
-  if(arguments.length == 2) return this.defineAction(name, player);
+  if(arguments.length == 2 && typeof player == 'function') {
+    return this.defineAction(name, player);
+  }
   return this.createAction(name, player, entity, options);
 }
 
