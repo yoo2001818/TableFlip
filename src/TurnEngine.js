@@ -46,6 +46,7 @@ function TurnEngine(isServer) {
    * @see Entity
    */
   this.players = this.getEntitiesFor('player');
+  this._actions = {};
 }
 
 TurnEngine.prototype = Object.create(Engine.prototype);
@@ -143,6 +144,35 @@ TurnEngine.prototype.nextTurn = function() {
     }
   });
   return turn;
+}
+
+/* 
+- Define Action in Engine
+    engine.a('add', action)
+- Create Action
+    engine.a('add', player, entity, options)
+- Run Action
+    engine.a(action)
+ */
+
+TurnEngine.prototype.a = function(name, player, entity, options) {
+  if(typeof name !== 'string') {
+    return this.runAction(name);
+  }
+  if(arguments.length == 2) return this.defineAction(name, player);
+  return this.createAction(name, player, entity, options);
+}
+
+TurnEngine.prototype.defineAction = function(name, constructor) {
+  this._actions[name] = constructor;
+}
+
+TurnEngine.prototype.getActionConstructor = function(name) {
+  return this._actions[name];
+}
+
+TurnEngine.prototype.createAction = function(name, player, entity, options) {
+  return new (this.getActionConstructor(name))(player, entity, options);
 }
 
 /**
