@@ -27,11 +27,23 @@ engine.a('createDeck', Action.scaffold(function(engine) {
   var entity = engine.e().c('deck', TrumpCard.createDeck());
   this.result = entity.id;
 }));
+engine.a('shuffleDeck', Action.scaffold(function(engine) {
+  var deck = this.entity.c('deck').deck;
+  if(engine.isServer) {
+    var index = Deck.createShuffleIndex(deck.length);
+    deck.applyIndex(index);
+    this.result = index;
+  } else {
+    deck.applyIndex(this.result);
+  }
+}));
 
 // Add systems
 engine.s('deck').init(function(turn, engine) {
     if(!engine.isServer) return;
-    console.log(engine.e(engine.aa('createDeck')).c('deck'));
+    var entity = engine.e(engine.aa('createDeck'));
+    engine.aa('shuffleDeck', null, entity);
+    console.log(entity.c('deck'));
   }).done();
 
 // Add Player entities

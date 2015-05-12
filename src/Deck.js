@@ -48,12 +48,30 @@ function randomInt(min, max) {
 
 // Fisher-Yates shuffle
 Deck.prototype.shuffle = function() {
-  for(var i = 0; i < this.deque.length-1; ++i) {
+  for(var i = 0; i < this.deque.length; ++i) {
     var j = randomInt(i, this.deque.length);
     var swap = this.deque[j];
     this.deque[j] = this.deque[i];
     this.deque[i] = swap;
   }
+}
+
+Deck.prototype.applyIndex = function(index) {
+  var newDeque = [];
+  index.forEach(function(value, i) {
+    newDeque[i] = this.deque[value];
+  }, this);
+  this.deque = newDeque;
+}
+
+Deck.createShuffleIndex = function(length) {
+  var index = [];
+  for(var i = 0; i < length; ++i) {
+    var j = randomInt(0, i);
+    if(j != i) index[i] = index[j];
+    index[j] = i;
+  }
+  return index;
 }
 
 if(typeof module != 'undefined') {
