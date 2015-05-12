@@ -86,36 +86,36 @@ TurnEngine.prototype.nextTurn = function() {
      * @event TurnEngine#gameInit
      * @type {Turn}
      */
-    this.emit('gameInit', turn);
+    this.emit('gameInit', turn, this);
     /**
      * This event is fired when the sequence changes.
      *
      * @event TurnEngine#sequenceNext
      * @type {Turn}
      */
-    this.emit('sequenceNext', turn);
+    this.emit('sequenceNext', turn, this);
     /**
      * This event is fired when the turn changes.
      *
      * @event TurnEngine#turnNext
      * @type {Turn}
      */
-    this.emit('turnNext', turn);
+    this.emit('turnNext', turn, this);
     this.systems.forEach(function(system) {
       if(system.onInit) {
-        system.onInit(turn);
+        system.onInit(turn, this);
       }
-    });
+    }, this);
     this.systems.forEach(function(system) {
       if(system.onSequence) {
-        system.onSequence(turn);
+        system.onSequence(turn, this);
       }
-    });
+    }, this);
     this.systems.forEach(function(system) {
       if(system.onTurn) {
-        system.onTurn(turn);
+        system.onTurn(turn, this);
       }
-    });
+    }, this);
     return turn;
   }
   // 원래 있던 턴 객체의 플레이어 인덱스 + 1
@@ -130,19 +130,19 @@ TurnEngine.prototype.nextTurn = function() {
   var turn = new Turn(id + 1, order, seqId, this.players[order]);
   this.turns.push(turn);
   if(order == 0) {
-    this.emit('sequenceNext', turn);
+    this.emit('sequenceNext', turn, this);
     this.systems.forEach(function(system) {
       if(system.onSequence) {
-        system.onSequence(turn);
+        system.onSequence(turn, this);
       }
-    });
+    }, this);
   }
-  this.emit('turnNext', turn);
+  this.emit('turnNext', turn, this);
   this.systems.forEach(function(system) {
     if(system.onTurn) {
-      system.onTurn(turn);
+      system.onTurn(turn, this);
     }
-  });
+  }, this);
   return turn;
 }
 
@@ -161,6 +161,10 @@ TurnEngine.prototype.a = function(name, player, entity, options) {
   }
   if(arguments.length == 2) return this.defineAction(name, player);
   return this.createAction(name, player, entity, options);
+}
+
+TurnEngine.prototype.aa = function(name, player, entity, options) {
+  return this.runAction(this.createAction(name, player, entity, options));
 }
 
 TurnEngine.prototype.defineAction = function(name, constructor) {
@@ -200,26 +204,26 @@ TurnEngine.prototype.runAction = function(action) {
    * @property {Turn} 0 - The current Turn.
    * @property {Action} 1 - The Action object.
    */
-  this.emit('preAction', turn, action);
+  this.emit('preAction', turn, action, this);
   this.systems.forEach(function(system) {
     if(system.onPreAction) {
-      system.onPreAction(turn, action);
+      system.onPreAction(turn, action, this);
     }
-  });
+  }, this);
   turn.addAction(action);
-  action.run(engine);
+  action.run(this);
   /**
    * This event is fired when the action executes.
    * @event TurnEngine#action
    * @property {Turn} 0 - The current Turn.
    * @property {Action} 1 - The Action object.
    */
-  this.emit('action', turn, action);
+  this.emit('action', turn, action, this);
   this.systems.forEach(function(system) {
     if(system.onAction) {
-      system.onAction(turn, action);
+      system.onAction(turn, action, this);
     }
-  });
+  }, this);
   return action.result;
 }
 

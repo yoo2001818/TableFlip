@@ -140,9 +140,12 @@ Engine.prototype.createEntity = function() {
   return entity;
 }
 
-Engine.prototype.e = function() {
-  if(arguments.length == 0) {
+Engine.prototype.e = function(id) {
+  if(arguments.length === 0) {
     return this.createEntity();
+  }
+  if(typeof id === 'number') {
+    return this.getEntity(id);
   }
   return this.getEntitiesFor.apply(this, arguments);
 }

@@ -8,18 +8,30 @@ var TrumpCard = require('./TrumpCard');
 
 var TurnEngine = require('../src/TurnEngine');
 var Entity = require('../src/Entity');
+var Action = require('../src/Action');
 
 var PlayerComponent = require('../src/PlayerComponent');
 
 // Create engine and add Components
 var engine = new TurnEngine(true);
 engine.c('player', PlayerComponent);
+engine.c('deck', (function() {
+  function DeckComponent(args) {
+    this.deck = args;
+  }
+  return DeckComponent;
+})());
+
+// Add actions
+engine.a('createDeck', Action.scaffold(function(engine) {
+  var entity = engine.e().c('deck', TrumpCard.createDeck());
+  this.result = entity.id;
+}));
 
 // Add systems
-engine.s('player').init(function() {
-    console.log(engine.e('player').map(function(entity) {
-      return entity.c('player').name;
-    }));
+engine.s('deck').init(function(turn, engine) {
+    if(!engine.isServer) return;
+    console.log(engine.e(engine.aa('createDeck')).c('deck'));
   }).done();
 
 // Add Player entities

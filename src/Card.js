@@ -1,5 +1,5 @@
-function Card(type) {
-  this.type = type;
+function Card(id) {
+  this.id = id;
   this.direction = false; 
 }
 
