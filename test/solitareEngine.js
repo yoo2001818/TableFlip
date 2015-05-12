@@ -46,6 +46,10 @@ engine.s('deck').init(function(turn, engine) {
     console.log(entity.c('deck'));
   }).done();
 
+engine.s('server').action(function(turn, action, engine) {
+    console.log(action);
+  }).done();
+
 // Add Player entities
 engine.e().c('player', {id: 0, name: 'Test 1'});
 engine.e().c('player', {id: 1, name: 'Test 2'});

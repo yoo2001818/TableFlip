@@ -50,7 +50,7 @@ SystemBuilder.prototype.preAction = function(callback) {
   return this;
 }
 
-SystemBuilder.prototype.onAction = function(callback) {
+SystemBuilder.prototype.action = function(callback) {
   this.system.onAction = callback;
   return this;
 }
