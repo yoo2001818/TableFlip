@@ -1,0 +1,25 @@
+function TileMap(w, h) {
+  this.width = w;
+  this.height = h;
+  this.reset();
+}
+
+TileMap.prototype.reset = function() {
+  this.map = [];
+  for(var y = 0; y < this.height; y++) {
+    this.map[y] = [];
+    for(var x = 0; x < this.width; x++) {
+      this.map[y][x] = new Tile();
+    } 
+  }
+}
+
+function Tile() {
+
+}
+
+TileMap.Tile = Tile;
+
+if(typeof module != 'undefined') {
+  module.exports = TileMap;
+}
