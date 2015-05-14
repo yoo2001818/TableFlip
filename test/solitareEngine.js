@@ -43,11 +43,6 @@ engine.s('deck').init(function(turn, engine) {
     if(!engine.isServer) return;
     var entity = engine.e(engine.aa('createDeck'));
     engine.aa('shuffleDeck', null, entity);
-    console.log(entity.c('deck'));
-  }).done();
-
-engine.s('server').action(function(turn, action, engine) {
-    console.log(action);
   }).done();
 
 // Add Player entities
@@ -59,5 +54,4 @@ engine.e().c('player', {id: 2, name: 'Test 3'});
 for(var i = 0; i < 10; ++i) {
   var turn = engine.nextTurn();
   console.log('Seq', turn.seqId, 'Turn', turn.order, '(#'+turn.id+')');
-  console.log(turn.player.get('player').name);
 }
