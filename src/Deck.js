@@ -56,6 +56,12 @@ Deck.prototype.shuffle = function() {
   }
 }
 
+Deck.prototype.slice = function(quantity, deck) {
+  if(deck == null) deck = new Deck();
+  for(var i = 0; i < quantity; ++i) deck.push(this.pop());
+  return deck; 
+}
+
 Deck.prototype.applyIndex = function(index) {
   var newDeque = [];
   index.forEach(function(value, i) {
