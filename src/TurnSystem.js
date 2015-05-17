@@ -56,6 +56,16 @@ TurnSystem.prototype.onAction = function(turn, action) {
   
 }
 
+/**
+ * Called when the new action is required to sent to the server.
+ * @param turn {Turn} - The current Turn.
+ * @param action {Action} - The action that has run.
+ */
+TurnSystem.prototype.onAction = function(turn, action) {
+  return false;
+}
+
+
 if(typeof module !== 'undefined') {
   module.exports = TurnSystem;
 }

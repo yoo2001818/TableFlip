@@ -55,6 +55,11 @@ SystemBuilder.prototype.action = function(callback) {
   return this;
 }
 
+SystemBuilder.prototype.sendAction = function(callback) {
+  this.system.sendAction = callback;
+  return this;
+}
+
 // Done
 SystemBuilder.prototype.done = function() {
   if(this.engine && this.key) {

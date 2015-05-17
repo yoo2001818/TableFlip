@@ -196,7 +196,14 @@ TurnEngine.prototype.runAction = function(action) {
     }
   } else {
     if(!action.result) {
-      throw new Error('Action hasn\'t run on server yet');
+      var handled = false;
+      this.systems.forEach(function(system) {
+        if(system.sendAction) {
+          if(system.sendAction(turn, action, this)) handled = true;
+        }
+      }, this);
+      if(!handled) throw new Error('Action hasn\'t run on server yet');
+      return;
     }
   }
   var turn = this.getTurn();
