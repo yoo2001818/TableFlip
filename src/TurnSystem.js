@@ -1,17 +1,17 @@
-var System = require('./System');
+var ActionSystem = require('./ActionSystem');
 
 /**
  * Represents a System for a turn based game.
  * TurnSystem manages TurnEngine's Entity by its own method.
  * @constructor
- * @extends System
+ * @extends ActionSystem
  * @see Entity
  */
 function TurnSystem() {
-  System.call(this);
+  ActionSystem.call(this);
 }
 
-TurnSystem.prototype = Object.create(System.prototype);
+TurnSystem.prototype = Object.create(ActionSystem.prototype);
 TurnSystem.prototype.constructor = TurnSystem;
 
 /**
@@ -36,33 +36,6 @@ TurnSystem.prototype.onTurn = function(turn) {
  */
 TurnSystem.prototype.onSequence = function(turn) {
   
-}
-
-/**
- * Called when before action runs.
- * @param turn {Turn} - The current Turn.
- * @param action {Action} - The action about to run.
- */
-TurnSystem.prototype.onPreAction = function(turn, action) {
-  
-}
-
-/**
- * Called when the action runs.
- * @param turn {Turn} - The current Turn.
- * @param action {Action} - The action that has run.
- */
-TurnSystem.prototype.onAction = function(turn, action) {
-  
-}
-
-/**
- * Called when the new action is required to sent to the server.
- * @param turn {Turn} - The current Turn.
- * @param action {Action} - The action that has run.
- */
-TurnSystem.prototype.onAction = function(turn, action) {
-  return false;
 }
 
 

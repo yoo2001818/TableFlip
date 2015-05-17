@@ -1,39 +1,18 @@
-var Engine = require('./Engine');
+var ActionEngine = require('./ActionEngine');
 var ComponentGroup = require('./ComponentGroup');
 var Turn = require('./Turn');
-
-/**
- * 턴 기반 멀티플레이어 게임 엔진
- * Player, Action으로 정보 저장 및 교환함
- * Player 객체도 Entity로써 저장됨.
- * 플레이어 컴포넌트를 등록시 같이 지정함
- */
- 
-/**
- * 게임의 모든 플레이어가 한 턴씩 가질때를 '시퀀스'라고 부름.
- *
- * 턴
- * player - 해당 턴의 플레이어 객체
- * id - 턴 ID
- * seqId - 시퀀스 ID
- */
  
 /**
  * Represents an turn based game engine.
  * It's like a normal ECS with Action and Turn.
  * @constructor
- * @extends Engine
+ * @extends ActionEngine
  * @param {Boolean} [isServer=false] - Whether if it's a server or not
  * @see Action
  * @see Turn
  */
 function TurnEngine(isServer) {
-  Engine.call(this);
-  /**
-   * A boolean contains whether if it's a server or not.
-   * @var {Boolean}
-   */
-  this.isServer = isServer || false;
+  ActionEngine.call(this, isServer);
   /**
    * An array holding all the {@link Turn} used in the game.
    * @var {Array}
@@ -49,7 +28,7 @@ function TurnEngine(isServer) {
   this._actions = {};
 }
 
-TurnEngine.prototype = Object.create(Engine.prototype);
+TurnEngine.prototype = Object.create(ActionEngine.prototype);
 TurnEngine.prototype.constructor = TurnEngine;
 
 /**
@@ -144,96 +123,6 @@ TurnEngine.prototype.nextTurn = function() {
     }
   }, this);
   return turn;
-}
-
-/* 
-- Define Action in Engine
-    engine.a('add', action)
-- Create Action
-    engine.a('add', player, entity, options)
-- Run Action
-    engine.a(action)
- */
-
-TurnEngine.prototype.a = function(name, player, entity, options) {
-  if(typeof name !== 'string') {
-    return this.runAction(name);
-  }
-  if(arguments.length == 2 && typeof player == 'function') {
-    return this.defineAction(name, player);
-  }
-  return this.createAction(name, player, entity, options);
-}
-
-TurnEngine.prototype.aa = function(name, player, entity, options) {
-  return this.runAction(this.createAction(name, player, entity, options));
-}
-
-TurnEngine.prototype.defineAction = function(name, constructor) {
-  this._actions[name] = constructor;
-}
-
-TurnEngine.prototype.getActionConstructor = function(name) {
-  return this._actions[name];
-}
-
-TurnEngine.prototype.createAction = function(name, player, entity, options) {
-  return new (this.getActionConstructor(name))(player, entity, options);
-}
-
-/**
- * Runs the Action.
- * Action shouldn't have run yet if {@link TurnEngine#isServer} is true,
- * but it should have run on server and have {@link Action#result} if not.
- * @param action {Action} - The Action to run.
- * @fires TurnEngine#action
- * @fires TurnEngine#preAction
- */
-TurnEngine.prototype.runAction = function(action) {
-  if(this.isServer) {
-    if(action.result) {
-      throw new Error('Action has already run');
-    }
-  } else {
-    if(!action.result) {
-      var handled = false;
-      this.systems.forEach(function(system) {
-        if(system.sendAction) {
-          if(system.sendAction(turn, action, this)) handled = true;
-        }
-      }, this);
-      if(!handled) throw new Error('Action hasn\'t run on server yet');
-      return;
-    }
-  }
-  var turn = this.getTurn();
-  /**
-   * This event is fired before the action executes.
-   * @event TurnEngine#preAction
-   * @property {Turn} 0 - The current Turn.
-   * @property {Action} 1 - The Action object.
-   */
-  this.emit('preAction', turn, action, this);
-  this.systems.forEach(function(system) {
-    if(system.onPreAction) {
-      system.onPreAction(turn, action, this);
-    }
-  }, this);
-  turn.addAction(action);
-  action.run(this);
-  /**
-   * This event is fired when the action executes.
-   * @event TurnEngine#action
-   * @property {Turn} 0 - The current Turn.
-   * @property {Action} 1 - The Action object.
-   */
-  this.emit('action', turn, action, this);
-  this.systems.forEach(function(system) {
-    if(system.onAction) {
-      system.onAction(turn, action, this);
-    }
-  }, this);
-  return action.result;
 }
 
 if(typeof module !== 'undefined') {
