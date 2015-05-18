@@ -333,7 +333,10 @@ Engine.prototype.createSystem = function(key) {
 }
 
 Engine.prototype.s = function(key, system) {
-  if(system == null) return this.createSystem(key);
+  if(system == null) {
+    if(this._systemTable[key] == null) return this.createSystem(key);
+    return this.getSystem(key);
+  }
   return this.addSystem(key, system);
 }
 
@@ -390,11 +393,11 @@ Engine.prototype.sortSystems = function() {
 /**
  * An update function called by every tick of the game.
  */
-Engine.prototype.update = function() {
+Engine.prototype.update = function(delta) {
   this.sortSystems();
   this.systems.forEach(function(system) {
     if(system.update) {
-      system.update();
+      system.update(delta);
     }
   })
 }
